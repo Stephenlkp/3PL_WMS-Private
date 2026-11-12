@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(201, 132, 26, 0.08), transparent 32%),
+    #f3efe6;
+  color: #1c1915;
+}
+
+input, select, textarea, button {
+  font: inherit;
+}
+
+.heat-0 { background: #f7f3ea; color: #1c1915; }
+.heat-1 { background: #f3ddb0; color: #1c1915; }
+.heat-2 { background: #d7e5c8; color: #1c1915; }
+.heat-3 { background: #1f6b45; color: #f6f1e7; }
