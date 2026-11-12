@@ -2,14 +2,13 @@ import type { User } from "./types";
 
 const configuredApi = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
 
-/** On a phone, localhost is the phone. Use this site's host and let Next proxy /api to the Mac. */
+/** The browser always calls this site. Next proxies /api to the local API, including from https pages. */
 export function apiBase(): string {
   if (typeof window === "undefined") return configuredApi;
   try {
     const api = new URL(configuredApi);
     const apiIsLocal = api.hostname === "localhost" || api.hostname === "127.0.0.1";
-    const pageIsLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-    if (apiIsLocal && !pageIsLocal) return "";
+    if (apiIsLocal) return "";
   } catch {
     return configuredApi;
   }
@@ -111,9 +110,15 @@ export function fileUrl(id: string) {
   return `${apiBase()}/api/v1/files/${id}/content?access_token=${encodeURIComponent(token)}`;
 }
 
-export function barcodeUrl(productId: string) {
+export function barcodeUrl(productId: string, style: "code128" | "qr" = "code128", revision?: string) {
   const token = localStorage.getItem("wms_access") || "";
-  return `${apiBase()}/api/v1/products/${productId}/barcode?access_token=${encodeURIComponent(token)}`;
+  const version = revision ? `&v=${encodeURIComponent(revision)}` : "";
+  return `${apiBase()}/api/v1/products/${productId}/barcode?style=${style}${version}&access_token=${encodeURIComponent(token)}`;
+}
+
+export function locationBarcodeUrl(locationId: string) {
+  const token = localStorage.getItem("wms_access") || "";
+  return `${apiBase()}/api/v1/locations/${locationId}/barcode?style=qr&access_token=${encodeURIComponent(token)}`;
 }
 
 export async function downloadReport(path: string, filename: string) {

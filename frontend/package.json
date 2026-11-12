@@ -2,13 +2,14 @@
   "name": "wms-frontend",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3000 -H 0.0.0.0 --experimental-https --experimental-https-key ./certificates/dev-key.pem --experimental-https-cert ./certificates/dev-cert.pem",
+    "dev": "node scripts/ensure-dev-cert.mjs && next dev -p 3000 -H 0.0.0.0 --experimental-https --experimental-https-key ./certificates/dev-key.pem --experimental-https-cert ./certificates/dev-cert.pem",
     "build": "next build",
     "start": "next start -p 3000"
   },
   "dependencies": {
     "html5-qrcode": "^2.3.8",
     "next": "^15.1.3",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

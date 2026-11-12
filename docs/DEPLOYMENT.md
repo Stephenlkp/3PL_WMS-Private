@@ -37,6 +37,18 @@ Run more than one API process only behind that proxy. Uvicorn workers do not rep
 
 Access tokens expire after 15 minutes. Refresh tokens last 7 days, are stored hashed, and rotate on use. Put the web app and API on HTTPS so the bearer token is not sent in the clear. Preview URLs for airway bills and barcodes accept the access token as a query parameter so a phone can render an image. The API sends `Referrer-Policy: no-referrer` so that token is not leaked onward.
 
+## Windows program
+
+Intel and AMD Windows PCs use a 64-bit program. Windows on ARM is a separate build, and current Node has no 32-bit edition.
+
+On that PC, from `wms`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File packaging\windows\build.ps1
+```
+
+The result is `release\StarLinks\StarLinks.exe`. Copy the whole `StarLinks` folder onto the warehouse PC and double-click the exe. It opens the browser, stores the warehouse in `data\wms.db` beside the program, and listens on port 3000 for other devices on the network. Close the console window to stop it.
+
 ## Local SQLite
 
 SQLite is for development and the automated tests. The same models and the same view SQL run there. Postgres is the deployment database. Do not point two API processes at one SQLite file.

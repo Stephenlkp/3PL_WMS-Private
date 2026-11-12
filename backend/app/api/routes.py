@@ -52,7 +52,7 @@ from app.schemas import (
     TransactionOut,
 )
 from app.services import catalog, files, fulfillment, identity, queries, reports, search, stock
-from app.services.barcode_img import render_code128
+from app.services.barcode_img import render_label
 from app.services.catalog import customer_out, location_out, product_out, rate_card_out, user_out
 from app.services.fulfillment import order_out, picklist_out, shipment_out
 
@@ -195,9 +195,14 @@ def patch_product(
 
 
 @router.get("/products/{product_id}/barcode", tags=["products"])
-def product_barcode(product_id: uuid.UUID, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def product_barcode(
+    product_id: uuid.UUID,
+    style: str = Query(default="code128", pattern="^(code128|qr)$"),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     product = catalog.get_product(db, user, product_id)
-    png = render_code128(product.barcode)
+    png = render_label(product.barcode, style)
     return Response(content=png, media_type="image/png", headers={"Content-Disposition": f'inline; filename="{product.sku}.png"'})
 
 
@@ -238,9 +243,14 @@ def location_contents(location_id: uuid.UUID, user: User = Depends(get_current_u
 
 
 @router.get("/locations/{location_id}/barcode", tags=["locations"])
-def location_barcode(location_id: uuid.UUID, _: User = Depends(staff), db: Session = Depends(get_db)):
+def location_barcode(
+    location_id: uuid.UUID,
+    style: str = Query(default="qr", pattern="^(code128|qr)$"),
+    _: User = Depends(staff),
+    db: Session = Depends(get_db),
+):
     location = catalog.get_location(db, location_id, None)
-    png = render_code128(location.location_code)
+    png = render_label(location.location_code, style)
     return Response(content=png, media_type="image/png")
 
 

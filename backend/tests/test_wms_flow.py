@@ -395,3 +395,7 @@ def test_reports_export_csv(client, admin):
     barcode = client.get(f"/api/v1/products/{world['product']['id']}/barcode", headers=admin)
     assert barcode.status_code == 200
     assert barcode.content.startswith(b"\x89PNG")
+    qr = client.get(f"/api/v1/products/{world['product']['id']}/barcode", headers=admin, params={"style": "qr"})
+    assert qr.status_code == 200
+    assert qr.content.startswith(b"\x89PNG")
+    assert qr.content != barcode.content

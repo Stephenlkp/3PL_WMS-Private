@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useUser } from "@/components/shell";
+import { LoginQr } from "@/components/login-qr";
 import { Card, PageHeader } from "@/components/ui";
 
 type Low = { sku: string; product_name: string; available_qty: number; reorder_point: number; customer_name: string };
@@ -47,7 +48,11 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <PageHeader title={customer ? `${data.customer_name} inventory` : "Floor today"} lede="Quantities come from the ledger. Nothing on this page is an editable balance." />
+      <PageHeader
+        title={customer ? `${data.customer_name} inventory` : "Floor today"}
+        lede="Quantities come from the ledger. Nothing on this page is an editable balance."
+        action={<LoginQr />}
+      />
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {stats.map(([label, value]) => (
           <Card key={String(label)}>

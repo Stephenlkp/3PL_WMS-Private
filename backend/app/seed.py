@@ -6,6 +6,7 @@ Run with `python -m app.seed`. Safe to run again; it stops if the admin exists.
 from __future__ import annotations
 
 import io
+import os
 from collections import Counter
 from pathlib import Path
 
@@ -18,7 +19,7 @@ from app.models.entities import User
 from app.schemas import CustomerIn, LocationIn, ProductIn, ReceiveIn, UserCreate
 from app.services import catalog, files, stock
 
-STOCK_FILE = Path(__file__).resolve().parents[1] / "data" / "iSpring_SKU_List.xlsx"
+STOCK_FILE = Path(os.environ["WMS_STOCK_FILE"]) if os.environ.get("WMS_STOCK_FILE") else Path(__file__).resolve().parents[1] / "data" / "iSpring_SKU_List.xlsx"
 FEATURED_SKU = "MRO400EU"
 FEATURED_BIN = "A-02-03"
 

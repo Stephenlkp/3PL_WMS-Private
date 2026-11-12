@@ -94,10 +94,10 @@ export function Scanner({
         { facingMode: "environment" },
         {
           fps: 8,
-          qrbox: (width, height) => ({
-            width: Math.max(180, Math.floor(width * 0.88)),
-            height: Math.max(90, Math.floor(Math.min(160, height * 0.45))),
-          }),
+          qrbox: (width, height) => {
+            const edge = Math.max(220, Math.floor(Math.min(width, height) * 0.8));
+            return { width: Math.min(width, edge), height: Math.min(height, edge) };
+          },
         },
         (text) => emit(text),
         () => undefined,
@@ -129,7 +129,7 @@ export function Scanner({
       </button>
       {cameraError && <p className="text-sm text-brick">{cameraError}</p>}
       <div id="wms-camera" className={cameraOn ? "min-h-52 overflow-hidden rounded-2xl bg-black" : "hidden"} />
-      <p className="text-sm text-ink/60">A USB scanner types into this box and sends Enter. The camera reads Code 128 bin and product labels.</p>
+      <p className="text-sm text-ink/60">Point the camera at a bin or product QR. A USB scanner can still type a Code 128 label into this box and send Enter.</p>
     </div>
   );
 }

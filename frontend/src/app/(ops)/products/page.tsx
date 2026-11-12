@@ -120,7 +120,8 @@ export default function ProductsPage() {
             <article key={product.id} className="rounded-2xl border border-line bg-card p-3">
               <div className="flex gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={barcodeUrl(product.id)} alt={`${product.sku} barcode`} className="h-16 w-36 object-contain" />
+                <img src={barcodeUrl(product.id, "qr", product.barcode)} alt={`${product.sku} QR`} className="h-20 w-20 object-contain" />
+                <img src={barcodeUrl(product.id, "code128", product.barcode)} alt={`${product.sku} barcode`} className="h-16 w-36 object-contain" />
                 <div className="min-w-0">
                   <p className="font-semibold">{product.sku}</p>
                   <p className="text-sm">{product.name}</p>
